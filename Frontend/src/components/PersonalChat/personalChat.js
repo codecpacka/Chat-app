@@ -36,6 +36,7 @@ const socket = io("http://localhost:3000")
 //     </Form>
 //   )
 // }
+
 function MsgBox() {
   const [todos, setTodos] = React.useState([
     // {
@@ -43,10 +44,7 @@ function MsgBox() {
     //   isDone: false,
     // },
   ])
-  const addTodo = (text) => {
-    const newTodos = [...todos, { text }]
-    setTodos(newTodos)
-  }
+
   const [value, setValue] = React.useState("")
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -55,6 +53,15 @@ function MsgBox() {
     setValue("")
   }
 
+  socket.on("received-message", (receivedMsg) => {
+    console.log("received message from server")
+    addTodo(receivedMsg)
+  })
+  const addTodo = (text) => {
+    const newTodos = [...todos, { text }]
+    setTodos(newTodos)
+    socket.emit("event-manager", text)
+  }
   return (
     // <Form onSubmit={handleSubmit}>
 

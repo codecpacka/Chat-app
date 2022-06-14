@@ -18,6 +18,10 @@ const io = new Server(httpServer, {
 
 io.on("connection", (socket) => {
   console.log(socket.id)
+  socket.on("event-manager", (message) => {
+    console.log(`mesg fron client is ${message}`)
+    // io.emit("received-message", message)
+  })
 })
 
 httpServer.listen(3000)
